@@ -40,4 +40,12 @@ Do these steps:
 # pcs cluster start --all
 #
 # corosync-quorumtool
+#
+# test the config files and fix STONITH errors
+# crm_verify -L -V
+# 
+# fix it....
+# pcs property set stonith-enabled=false
+#
+# crm_verify -L -V
 </pre>	
