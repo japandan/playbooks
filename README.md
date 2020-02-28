@@ -20,6 +20,11 @@ Do these steps:
 ## Start the cluster on HPC1 with the following command:
 ## pcs cluster setup --start --name mycluster HPC1.local.datos.asia HPC2.loca
 l.datos.asia
-
+##
+## Enable cluster services pacemaker and corosync 
+## pcs cluster enable --all
+##
+## check the status
+## pcs cluster status
 
 </pre>	
