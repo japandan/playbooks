@@ -17,14 +17,27 @@ Do these steps:
 ## Username: hacluster
 ## Password: Cluster1
 ##
-## Start the cluster on HPC1 with the following command:
-## pcs cluster setup --start --name mycluster HPC1.local.datos.asia HPC2.loca
-l.datos.asia
+## Start the cluster on HPC1 with the following command for a 2 node cluster:
+## pcs cluster setup --start --name mycluster --wait_for_all=0  HPC1.local.datos.asia HPC2.loca l.datos.asia
 ##
 ## Enable cluster services pacemaker and corosync 
 ## pcs cluster enable --all
 ##
 ## check the status
 ## pcs cluster status
-
+##
+## stop the cluster and add this for 2 node operation
+## pcs cluster stop --all
+##
+# vim /etc/corosync/corosync.conf
+# quorum {
+#    provider: corosync_votequorum
+#    two_node: 1
+#    wait_for_all: 0
+# }
+#
+# test...
+# pcs cluster start --all
+#
+# corosync-quorumtool
 </pre>	
