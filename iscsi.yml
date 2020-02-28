@@ -10,7 +10,7 @@
 # 	ACL:	/etc/iscsi/initiatorname.iscsi
 #		InitiatorName=iqn.2014-01.asia.datos:datostech
 #
-
+#
 ---
 - name: Install base packages for cluster
   hosts: san  
@@ -32,3 +32,54 @@
         - pcs
         - dlm
         - fence-agents-all
+        - ntp
+
+    - name: Template the iscsi ACL file to the node /etc/iscsi
+      template: 
+        src: /SHARED/TEMPLATES/initiatorname.iscsi
+        dest: /etc/iscsi/initiatorname.iscsi
+
+ ## perform an iscsi discovery 
+    - open_iscsi:
+        show_nodes: yes
+        discover: yes
+        portal: hpc0
+
+    - open_iscsi:
+        login: yes
+        target: 'iqn.2014-01.asia.datos:usb0'
+
+    - open_iscsi:
+        login: yes
+        target: 'iqn.2014-01.asia.datos:usb1'
+
+    - open_iscsi:
+        login: yes
+        target: 'iqn.2014-01.asia.datos:disk0'
+
+    - name: Start iscsi service
+      service:
+        name: iscsi
+        state: started
+
+ ## setup ntp
+    - name: Template the ntp.conf to point to NTP server
+      template: 
+        src: /SHARED/TEMPLATES/ntp.conf
+        dest: /etc/ntp.conf
+
+    - name: Start NTP service
+      service:
+        name: ntpd
+        state: started
+
+## need to set password for user hacluster: echo Cluster1|passwd --stdin hacluster
+## need to enable pcsd: systemctl enable pcsd
+## Do this on 1 node
+## pcs cluster auth HPC1.local.datos.asia HPC2.local.datos.asia 
+## Username: hacluster
+## Password: Cluster1
+##
+## Start the cluster on HPC1 with the following command:
+## pcs cluster setup --start --name mycluster HPC1.local.datos.asia HPC2.loca
+l.datos.asia
