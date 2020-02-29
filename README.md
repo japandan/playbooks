@@ -57,3 +57,10 @@ If you would leave the default setting of stop, mounted GFS2 file system cannot 
 <pre>
 pcs resource create dlm ocf:pacemaker:controld op monitor interval=30s on-fail=fence clone interleave=true ordered=true
 </pre>
+Fencing also has a role to play in the event that a clustered service cannot be stopped. In this case,
+the cluster uses fencing to force the whole node offline, thereby making it safe to start the service
+elsewhere.
+Fencing is also known as STONITH, an acronym for "Shoot The Other Node In The Head", since the
+most popular form of fencing is cutting a host’s power.
+In order to guarantee the safety of your data, 1
+ fencing is enabled by default.
