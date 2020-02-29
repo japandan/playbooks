@@ -62,5 +62,4 @@ the cluster uses fencing to force the whole node offline, thereby making it safe
 elsewhere.
 Fencing is also known as STONITH, an acronym for "Shoot The Other Node In The Head", since the
 most popular form of fencing is cutting a host’s power.
-In order to guarantee the safety of your data, 1
- fencing is enabled by default.
+In order to guarantee the safety of your data, fencing is enabled by default.
