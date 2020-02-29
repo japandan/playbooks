@@ -49,3 +49,11 @@ Do these steps:
 #
 # crm_verify -L -V
 </pre>	
+Change the pcs property to no-quorum-policy to freeze. This property is necessary because it means that cluster nodes will do nothing after losing quorum, and this is required for GFS2
+<pre>
+# pcs property set no-quorum-policy=freeze
+</pre>
+If you would leave the default setting of stop, mounted GFS2 file system cannot use the cluster to properly stop, which will result in fencing of the entire cluster.
+<pre>
+pcs resource create dlm ocf:pacemaker:controld op monitor interval=30s on-fail=fence clone interleave=true ordered=true
+</pre>
