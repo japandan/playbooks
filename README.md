@@ -54,9 +54,8 @@ Change the pcs property to no-quorum-policy to freeze. This property is necessar
 # pcs property set no-quorum-policy=freeze
 </pre>
 If you would leave the default setting of stop, mounted GFS2 file system cannot use the cluster to properly stop, which will result in fencing of the entire cluster.
-<pre>
-pcs resource create dlm pcs cluster cib stonith_cfg
-passwd=ADMIN op monitor interval=60s#pcs -f stonith_cfg stonith create ipmi-HPC1 fence_ipmilan pcmk_host_list="HPC1" ipaddr=10.10.99.17 login=ADMIN 
+<pre>pcs resource create dlm pcs cluster cib stonith_cfg
+#pcs -f stonith_cfg stonith create ipmi-HPC1 fence_ipmilan pcmk_host_list="HPC1" ipaddr=10.10.99.17 login=ADMIN passwd=ADMIN op monitor interval=60s
 #pcs -f stonith_cfg stonith create ipmi-HPC2 fence_ipmilan pcmk_host_list="HPC2" ipaddr=10.10.99.18 login=ADMIN passwd=ADMIN op monitor interval=60s
 #pcs -f stonith_cfg stonith
 #pcs -f stonith_cfg property set stonith-enabled=true
