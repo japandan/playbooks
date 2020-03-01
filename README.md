@@ -55,7 +55,14 @@ Change the pcs property to no-quorum-policy to freeze. This property is necessar
 </pre>
 If you would leave the default setting of stop, mounted GFS2 file system cannot use the cluster to properly stop, which will result in fencing of the entire cluster.
 <pre>
-pcs resource create dlm ocf:pacemaker:controld op monitor interval=30s on-fail=fence clone interleave=true ordered=true
+pcs resource create dlm pcs cluster cib stonith_cfg
+passwd=ADMIN op monitor interval=60s#pcs -f stonith_cfg stonith create ipmi-HPC1 fence_ipmilan pcmk_host_list="HPC1" ipaddr=10.10.99.17 login=ADMIN 
+#pcs -f stonith_cfg stonith create ipmi-HPC2 fence_ipmilan pcmk_host_list="HPC2" ipaddr=10.10.99.18 login=ADMIN passwd=ADMIN op monitor interval=60s
+#pcs -f stonith_cfg stonith
+#pcs -f stonith_cfg property set stonith-enabled=true
+#pcs -f stonith_cfg property
+#pcs cluster cib-push stonith_cfg --config 
+
 </pre>
 Fencing also has a role to play in the event that a clustered service cannot be stopped. In this case,
 the cluster uses fencing to force the whole node offline, thereby making it safe to start the service
@@ -63,3 +70,5 @@ elsewhere.
 Fencing is also known as STONITH, an acronym for "Shoot The Other Node In The Head", since the
 most popular form of fencing is cutting a host’s power.
 In order to guarantee the safety of your data, fencing is enabled by default.
+
+
